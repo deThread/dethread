@@ -1,0 +1,26 @@
+{
+  "name": "socketworker",
+  "version": "0.0.1",
+  "description": "Library to abstract out webworkers and socket connections",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeThread/library.git"
+  },
+  "keywords": [],
+  "author": "Bryan Yee, Shawn Southwell, Daniel Lao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DeThread/library.git"
+  },
+  "homepage": "https://github.com/DeThread/library#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "nodemon": "^1.11.0",
+    "socket.io": "^1.5.0"
+  }
+}
