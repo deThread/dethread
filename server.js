@@ -1,11 +1,12 @@
 const express = require('express');
 const path = require('path');
-const App = express(); 
-const http = require('http').Server(App);
+const app = express(); 
+const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const dethread = require('./dethread.js');
 
 
+dethread.start(io,['coffee','plz']);
 
 
 
@@ -15,11 +16,10 @@ const dethread = require('./dethread.js');
 
 
 
-
-App.use(express.static(path.join(__dirname, '/')));
-
+app.use(express.static(path.join(__dirname, '/')));
 
 
-App.listen(8080, function(e){
+
+http.listen(8080, function(e){
   console.log("connected on 8080");
 });
