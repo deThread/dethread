@@ -7,9 +7,18 @@
 </head>
 <body>
   <h1>Library Extraction</h1>
+  <button class="hungryBTN">I'm hugry</button>
 </body>
  <script src="/socket.io/socket.io.js"></script>
  <script>
    var socket = io();
+   socket.on("Library", (data) => console.log(data))
+   socket.on('Feed Me', () => console.log("I'm fed.'"));
+   var btn = document.getElementsByClassName('hungryBTN')[0];
+   btn.addEventListener('click', () => { socket.emit('Im Hungry')});
  </script>
 </html>
+   <!--socket.on('connect', () => {
+     console.log('client side socket ', socket.id);
+     socket.emit('Im Hungry');
+   })-->
