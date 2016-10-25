@@ -99,6 +99,7 @@ function distributeTask(socket) {
 
 function handleSocket() {
   io.on('connection', (socket) => {
+    addEvents(socket);
     connections.add(socket);
     distributeTask(socket);
 
@@ -130,7 +131,18 @@ function handleSocket() {
   });
 }
 
+function addEvents(socket) {
+  for(let event in eventContainer) {
+    socket.on(event, eventContainer[event]);
+  }
+  return socket; 
+}
 
+//dethread.on('receieve',() => socket.emit('message'));
+//socket.on('recieve', () => socket.emit('message'));
+//
+
+let eventContainer = {};
 let io;
 const dethread = {
   connections: undefined,
@@ -138,6 +150,10 @@ const dethread = {
   failedTasks: undefined,
   taskQueue: undefined,
   taskCompletionIndex: undefined,
+
+  on(event, callback) {
+    eventContainer[event] = callback;
+  }, 
 
   start(socketio, tasks) {
     this.connections = new Connections();
