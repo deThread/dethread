@@ -12,10 +12,6 @@ dethread.start(io,['coffee','plz']);
 
 
 
-
-
-
-
 app.use(express.static(path.join(__dirname, '/')));
 
 
