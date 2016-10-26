@@ -1,15 +1,15 @@
 {
-  "name": "socketworker",
-  "version": "0.0.1",
-  "description": "Library to abstract out webworkers and socket connections",
-  "main": "index.js",
+  "name": "dethread",
+  "version": "1.0.0",
+  "description": "An application library for distributed computing with JavaScript, WebSockets, and web workers in the browser.",
+  "main": "dethread.js",
   "scripts": {
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DeThread/library.git"
+    "url": "https://github.com/DeThread/dethread"
   },
   "keywords": [],
   "author": "Bryan Yee, Shawn Southwell, Daniel Lao",
@@ -19,16 +19,8 @@
   },
   "homepage": "https://github.com/DeThread/library#readme",
   "dependencies": {
-    "eslint": "^3.8.1",
     "express": "^4.14.0",
     "nodemon": "^1.11.0",
     "socket.io": "^1.5.0"
-  },
-  "devDependencies": {
-    "eslint": "^3.8.1",
-    "eslint-config-airbnb": "^12.0.0",
-    "eslint-plugin-import": "^1.16.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.4.1"
   }
 }
