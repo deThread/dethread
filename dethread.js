@@ -1,5 +1,6 @@
 'use strict';
 
+// ***** Connections constructor *****
 function Connections() {
   this.sockets = {};
 }
@@ -9,7 +10,6 @@ Connections.prototype.add = function (socket) {
   this.sockets[socket.id].taskIndex = undefined;
 };
 
-// remove happens when theres a disconnection
 Connections.prototype.remove = function (socket) {
   if (!this.sockets[socket.id]) return false;
   delete this.sockets[socket.id];
@@ -22,13 +22,14 @@ Connections.prototype.terminateAll = function () {
   this.sockets = {};
 };
 
+// ***** SocketPool constructor *****
 function SocketPool() {
   this.socketPool = [];
   this.length = 0;
 }
 
 SocketPool.prototype.push = function (socket) {
-  socket.taskIndex = undefined;
+  socket.taskIndexArray = [];-
   this.socketPool.push(socket.id);
   this.length++;
 };
@@ -48,6 +49,7 @@ SocketPool.prototype.remove = function (socketIndex) {
   this.length--;
 }
 
+// ***** FailedTasks constructor *****
 function FailedTasks() {
   this.failedTasks = [];
   this.length = 0;
@@ -63,6 +65,7 @@ FailedTasks.prototype.pop = function () {
   return this.failedTasks.pop();
 };
 
+// ***** TaskQueue constructor *****
 function TaskQueue(array) {
   if (!Array.isArray(array)) throw new Error('TaskQueue parameter must be an array.');
   else {
@@ -78,66 +81,99 @@ TaskQueue.prototype.getTask = function (failedIndex) {
   return this.taskQueue[this.index++];
 };
 
-let connections;
-let socketPool;
-let failedTasks;
-let taskQueue;
-let io;
-let taskCompletionIndex;
+// dethread local variables and functions: handles socket communication and task distribution logic
 
 function distributeTask(socket) {
-  if (taskQueue.index <= taskQueue.length) {
-    socket.emit('startTask', taskQueue.getTask());
-    socket.taskIndex = taskQueue.index;
-    taskCompletionIndex++;
-  } else if (failedTasks.length) {
-    const failedTaskIndex = failedTasks.pop();
-    socket.emit('startTask', taskQueue.getTask(failedTaskIndex));
-    taskCompletionIndex++;
-  } else {
-    socketPool.push(socket);
+  socket.taskIndexArray = [];
+  for (let i = 0; i < socket.workers; i++){
+    if (dethread.taskQueue.index <= dethread.taskQueue.length) {
+      socket.emit('startTask', dethread.taskQueue.getTask());
+      socket.taskIndexArray.push(dethread.taskQueue.index);
+      dethread.taskCompletionIndex++;
+    } else if (dethread.failedTasks.length) {
+      const failedTaskIndex = dethread.failedTasks.pop();
+      socket.emit('startTask', dethread.taskQueue.getTask(failedTaskIndex));
+      socket.taskIndexArray.push(failedTaskIndex);
+      dethread.taskCompletionIndex++;
+    } else if (!socket.taskIndexArray.length) {
+      dethread.socketPool.push(socket);
+    }
   }
+}
+function closeProcess() {
+  io.emit('processComplete');
+  io.close();
+  dethread.start();
 }
 
 function handleSocket() {
   io.on('connection', (socket) => {
-    console.log('socket io connect');
-    connections.add(socket);
+    addEvents(socket);
+    dethread.connections.add(socket);
     distributeTask(socket);
-    
-    socket.on('finishTask', () => {
-      taskCompletionIndex--;
-      if (!failedTasks.length && taskQueue.index === taskQueue.length && !taskCompletionIndex) {
-        io.emit('processComplete');
-      } else { 
+
+    socket.on('numberOfCores', (workers) => {
+      socket.workers = workers;
+    });
+
+    socket.on('processComplete', closeProcess);
+
+    socket.on('finishTask', (taskComplete) => {
+      dethread.taskCompletionIndex--;
+      const index = taskIndexArray.indexOf(taskComplete);
+      socket.taskIndexArray.splice(index, 1);
+      if (!dethread.failedTasks.length && dethread.taskQueue.index === dethread.taskQueue.length && !dethread.taskCompletionIndex) {
+        closeProcess();
+      } else if (!socket.taskIndexArray.length) { 
         distributeTask(socket);
       }
     });
 
     socket.on('disconnect', () => {
-      const failedTaskIndex = socket.taskIndex;
-      const socketPoolIndex = socketPool.indexOf(socket.id);
-      if (socketPoolIndex !== -1) {
-        socketPool.remove(socketPoolIndex);
-      } else if (socketPool.length) {
-        connections[socketPool.pop()].emit('startWork', taskQueue.getTask(failedTaskIndex));
+      const failedTaskIndeces = socket.taskIndexArray;
+      const socketPoolIndex = dethread.socketPool.socketPool.indexOf(socket.id);
+
+      if (dethread.socketPoolIndex !== -1) {
+        dethread.socketPool.remove(dethread.socketPoolIndex);
       } else {
-        failedTasks.push(failedTaskIndex);
-        taskCompletionIndex--;
-      }
-      connections.remove(socket);
+        dethread.failedTasks.push(...failedTaskIndeces);
+        dethread.taskCompletionIndex -= failedTaskIndeces.length;
+        if (dethread.socketPool.length) {
+          distributeTask(dethread.connections[dethread.socketPool.pop()]);
+        }
+      } 
+      dethread.connections.remove(socket);
     });
   });
 }
 
+function addEvents(socket) {
+  for(let event in eventContainer) {
+    socket.on(event, eventContainer[event].bind(null, socket));
+  }
+  return socket; 
+}
+
+let eventContainer = {};
+let io;
 const dethread = {
+  connections: undefined,
+  socketPool: undefined,
+  failedTasks: undefined,
+  taskQueue: undefined,
+  taskCompletionIndex: undefined,
+
+  on(event, callback) {
+    eventContainer[event] = callback;
+  },
+
   start(socketio, tasks) {
-    connections = new Connections();
-    socketPool = new SocketPool();
-    failedTasks = new FailedTasks();
-    taskQueue = new TaskQueue(tasks);
+    this.connections = new Connections();
+    this.socketPool = new SocketPool();
+    this.failedTasks = new FailedTasks();
+    this.taskQueue = new TaskQueue(tasks);
+    this.taskCompletionIndex = 0;
     io = socketio;
-    taskCompletionIndex = 0;
     handleSocket();
   },
 };
