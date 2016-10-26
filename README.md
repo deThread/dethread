@@ -31,8 +31,10 @@ npm install --S dethread
 ```` 
 
 ## <a name="docs"></a> Documentation 
+Coming SOON! 
 
 ---
+
 ## <a name="md5"></a> Examples and Use Cases 
 
 Example: 
