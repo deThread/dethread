@@ -45,6 +45,7 @@ btn.addEventListener('click', () => {
   });
 
   socket.on('processComplete', (data) => {
+    console.log('success:', data);
     workerPool.forEach((worker) => worker.terminate());
     socket.disconnect();
   });
