@@ -29,7 +29,7 @@ function SocketPool() {
 }
 
 SocketPool.prototype.push = function (socket) {
-  socket.taskIndexArray = [];-
+  socket.taskIndexArray = [];
   this.socketPool.push(socket.id);
   this.length++;
 };
@@ -110,10 +110,10 @@ function handleSocket() {
   io.on('connection', (socket) => {
     addEvents(socket);
     dethread.connections.add(socket);
-    distributeTask(socket);
-
-    socket.on('numberOfCores', (workers) => {
+    
+    socket.on('clientReady', (workers) => {
       socket.workers = workers;
+      distributeTask(socket);
     });
 
     socket.on('processComplete', closeProcess);
@@ -162,6 +162,12 @@ const dethread = {
   failedTasks: undefined,
   taskQueue: undefined,
   taskCompletionIndex: undefined,
+  state: undefined,
+  closeProcess() {
+    io.emit('processComplete');
+    io.close();
+    this.start();
+  },
 
   on(event, callback) {
     eventContainer[event] = callback;
@@ -173,6 +179,7 @@ const dethread = {
     this.failedTasks = new FailedTasks();
     this.taskQueue = new TaskQueue(tasks);
     this.taskCompletionIndex = 0;
+    this.state = {};
     io = socketio;
     handleSocket();
   },
