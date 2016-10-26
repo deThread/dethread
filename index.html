@@ -11,14 +11,14 @@
 </body>
  <script src="/socket.io/socket.io.js"></script>
  <script>
+   const numCores = navigator.hardwareConcurrency;
    var socket = io();
+   socket.on('connect', () => {
+     socket.emit('numberOfCores', numCores);
+   })
    socket.on("Library", (data) => console.log(data))
    socket.on('Feed Me', () => console.log("I'm fed.'"));
    var btn = document.getElementsByClassName('hungryBTN')[0];
    btn.addEventListener('click', () => { socket.emit('Im Hungry')});
  </script>
 </html>
-   <!--socket.on('connect', () => {
-     console.log('client side socket ', socket.id);
-     socket.emit('Im Hungry');
-   })-->
