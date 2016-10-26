@@ -1,4 +1,4 @@
-# DeThread
+# DeThread &nbsp;&nbsp; [![npm version](https://badge.fury.io/js/dethread.svg)](https://badge.fury.io/js/dethread)
 
 DeThread is an application library that enables distributed computing with JavaScript in the web browser. 
 
