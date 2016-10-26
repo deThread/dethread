@@ -1,1 +1,12 @@
 node_modules
+.npmignore
+.eslintrc.js
+application.js
+base26Table.js
+dethreadClient.js
+index.html
+index.js
+md5.js
+server.js
+styles.css
+worker.js
