@@ -88,7 +88,6 @@ TaskQueue.prototype.getTask = function (failedIndex) {
 // dethread local variables and functions: handles socket communication and task distribution logic
 
 function distributeTask(socket) {
-  console.log('dethread.failedTasks', dethread.failedTasks, 'task index array', socket.taskIndexArray);
   socket.taskIndexArray = [];
   for (let i = 0; i < socket.workers; i++){
     if (dethread.taskQueue.index < dethread.taskQueue.length) {
@@ -108,11 +107,7 @@ function distributeTask(socket) {
 
 function closeProcess(data) {
   io.emit('processComplete', data);
-  console.log('process complete', data);
-  // io.close();
-  console.log("The first item is localTasks, localClientInit", localTasks, localClientInit);
   dethread.failedTasks = new FailedTasks();
-  console.log('inside closeProcess', dethread.failedTasks);
   dethread.start(io, localTasks, localClientInit);
 }
 
@@ -124,9 +119,7 @@ function handleSocket(clientInit) {
     socket.emit('clientInit', clientInit);
 
     socket.on('clientReady', (workers) => {
-      console.log('client ready:', socket.id);
-      socket.workers = +workers;
-      console.log('there are ', socket.workers, ' number of workers')
+      socket.workers = +workers || 1;
       distributeTask(socket);
     });
 
@@ -141,7 +134,6 @@ function handleSocket(clientInit) {
       if (!dethread.failedTasks.length && (dethread.taskQueue.index === dethread.taskQueue.length) && !dethread.taskCompletionIndex) {
         closeProcess();
       } else if (!socket.taskIndexArray.length) {
-        console.log('dethread.failedTasks', dethread.failedTasks, 'dethread.taskCompletionIndex', dethread.taskCompletionIndex);
         distributeTask(socket);
       }
     });
