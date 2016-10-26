@@ -136,7 +136,7 @@ function handleSocket() {
       if (dethread.socketPoolIndex !== -1) {
         dethread.socketPool.remove(dethread.socketPoolIndex);
       } else {
-        dethread.failedTasks.push(...failedTaskIndeces);
+        failedTaskIndeces.forEach((task) => dethread.failedTasks.push(task));
         dethread.taskCompletionIndex -= failedTaskIndeces.length;
         if (dethread.socketPool.length) {
           distributeTask(dethread.connections[dethread.socketPool.pop()]);
