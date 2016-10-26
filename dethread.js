@@ -1,5 +1,6 @@
 'use strict';
-
+let localTasks;
+let localClientInit;
 // ***** Connections constructor *****
 function Connections() {
   this.sockets = {};
@@ -67,6 +68,7 @@ FailedTasks.prototype.pop = function () {
 
 // ***** TaskQueue constructor *****
 function TaskQueue(array) {
+  array = array || [];
   if (!Array.isArray(array)) throw new Error('TaskQueue parameter must be an array.');
   else {
     this.taskQueue = array;
@@ -100,28 +102,32 @@ function distributeTask(socket) {
     }
   }
 }
-function closeProcess() {
-  io.emit('processComplete');
-  io.close();
-  dethread.start();
+function closeProcess(data) {
+  io.emit('processComplete', data);
+  // io.close();
+  dethread.start(io, localTasks, localClientInit);
 }
 
-function handleSocket() {
+function handleSocket(clientInit) {
   io.on('connection', (socket) => {
     addEvents(socket);
     dethread.connections.add(socket);
-    distributeTask(socket);
-
-    socket.on('numberOfCores', (workers) => {
-      socket.workers = workers;
+    
+    socket.emit('clientInit', clientInit);
+    
+    socket.on('clientReady', (workers) => {
+      socket.workers = +workers;
+      distributeTask(socket);
     });
-
+    
     socket.on('processComplete', closeProcess);
 
     socket.on('finishTask', (taskComplete) => {
       dethread.taskCompletionIndex--;
-      const index = taskIndexArray.indexOf(taskComplete);
+      const index = socket.taskIndexArray.indexOf(taskComplete);
       socket.taskIndexArray.splice(index, 1);
+      //when server completes all tasks, server should store result data somehow
+      //should we pass data to closeProcess when server finishes on line 130.
       if (!dethread.failedTasks.length && dethread.taskQueue.index === dethread.taskQueue.length && !dethread.taskCompletionIndex) {
         closeProcess();
       } else if (!socket.taskIndexArray.length) { 
@@ -136,7 +142,7 @@ function handleSocket() {
       if (dethread.socketPoolIndex !== -1) {
         dethread.socketPool.remove(dethread.socketPoolIndex);
       } else {
-        dethread.failedTasks.push(...failedTaskIndeces);
+        failedTaskIndeces.forEach((task) => dethread.failedTasks.push(task));
         dethread.taskCompletionIndex -= failedTaskIndeces.length;
         if (dethread.socketPool.length) {
           distributeTask(dethread.connections[dethread.socketPool.pop()]);
@@ -162,19 +168,28 @@ const dethread = {
   failedTasks: undefined,
   taskQueue: undefined,
   taskCompletionIndex: undefined,
+  state: undefined,
+  closeProcess() {
+    io.emit('processComplete');
+    io.close();
+    this.start();
+  },
 
   on(event, callback) {
     eventContainer[event] = callback;
   },
 
-  start(socketio, tasks) {
+  start(socketio, tasks, clientInit) {
     this.connections = new Connections();
     this.socketPool = new SocketPool();
     this.failedTasks = new FailedTasks();
     this.taskQueue = new TaskQueue(tasks);
     this.taskCompletionIndex = 0;
+    this.state = {};
     io = socketio;
-    handleSocket();
+    localClientInit = clientInit;
+    localTasks = tasks;
+    handleSocket(clientInit);
   },
 };
 
