@@ -29,7 +29,7 @@ function SocketPool() {
 }
 
 SocketPool.prototype.push = function (socket) {
-  socket.taskIndexArray = [];-
+  socket.taskIndexArray = [];
   this.socketPool.push(socket.id);
   this.length++;
 };
