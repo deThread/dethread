@@ -1,5 +1,3 @@
-node_modules
-.npmignore
 .eslintrc.js
 application.js
 base26Table.js
