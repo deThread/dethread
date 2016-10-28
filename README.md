@@ -1,4 +1,4 @@
-# deThread &nbsp;&nbsp; [![npm version](https://badge.fury.io/js/dethread.svg)](https://badge.fury.io/js/dethread)
+![Distributed Computing in Javascript](dethreadBlack.png?raw=true) [![npm version](https://badge.fury.io/js/dethread.svg)](https://badge.fury.io/js/dethread)
 
 deThread is an application library that enables distributed computing with JavaScript in the web browser. 
 
@@ -7,6 +7,7 @@ If you are a deThread user and would like to provide feed back on how we can imp
 
 We would love the opportunity to dethread your problems.
 
+[Checkout our demo application](http://dethread.io/)
 
 ## Contents 
 1. [Background on Distribued Computing](#background)
@@ -108,9 +109,10 @@ Web Workers are used to simulate a multithread environment to enable concurrent 
 socket.emit('clientReady', numWorkers)
 ```
 If numWorkers is not supplied, it defaults to 1.
+
 ## <a name="md5"></a> Examples and Use Cases 
 
-[Example:](http://dethread.io/)
+[Checkout our demo application](http://dethread.io/)
 We used MD5 hash decryption as an example to illustrate the power of distributed computing.  Not only does DeThread allow for users to distribute a problem across multiple bot-net nodes, it distributes the problem further on each connected device. 
 The problem is chunked once before it is distributed, then it is chunked again on the client and distributed to Web Workers dependent upon the client's hardware.
 
