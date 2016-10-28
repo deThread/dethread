@@ -1,6 +1,6 @@
 {
   "name": "dethread",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An application library for distributed computing with JavaScript, WebSockets, and web workers in the browser.",
   "main": "dethread.js",
   "scripts": {
