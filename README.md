@@ -2,7 +2,7 @@
 
 deThread is an application library that enables distributed computing with JavaScript in the web browser. 
 
-If you are a DeThread user and would like to provide feed back on how we can improve, please
+If you are a deThread user and would like to provide feed back on how we can improve, please
 [click here to leave some feedback](https://docs.google.com/forms/d/e/1FAIpQLSdRxi7h0A7A0YFU5Bmcj1nduDyMIPpE5H9zZzPCwHnAY7cgdQ/viewform).
 
 We would love the opportunity to dethread your problems.
