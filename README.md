@@ -1,6 +1,6 @@
-# DeThread &nbsp;&nbsp; [![npm version](https://badge.fury.io/js/dethread.svg)](https://badge.fury.io/js/dethread)
+# deThread &nbsp;&nbsp; [![npm version](https://badge.fury.io/js/dethread.svg)](https://badge.fury.io/js/dethread)
 
-DeThread is an application library that enables distributed computing with JavaScript in the web browser. 
+deThread is an application library that enables distributed computing with JavaScript in the web browser. 
 
 If you are a DeThread user and would like to provide feed back on how we can improve, please
 [click here to leave some feedback](https://docs.google.com/forms/d/e/1FAIpQLSdRxi7h0A7A0YFU5Bmcj1nduDyMIPpE5H9zZzPCwHnAY7cgdQ/viewform).
@@ -24,7 +24,7 @@ Distributed computing is a processing model that utilizes a network of devices t
 
 ## <a name="install"></a> Installation
 
-In the terminal, install dethread via npm:
+In the terminal, install deThread via npm:
 ```javascript
 npm install --S dethread
 ``` 
@@ -60,7 +60,7 @@ dethread.failedTasks
 ``` 
 ## <a name="gettingStarted"></a> Getting Started
 
-The DeThread library is built on top of the socket.io library.  In your server, simply require the socket.io and dethread modules.
+The deThread library is built on top of the socket.io library.  In your server, simply require the socket.io and dethread modules.
 <br/>
 <br/>
 Getting started is easy, first call dethread.start. 
