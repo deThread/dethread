@@ -10,7 +10,7 @@ We would love the opportunity to dethread your problems.
 [Checkout our demo application](http://dethread.io/)
 
 ## Contents 
-1. [Background on Distribued Computing](#background)
+1. [Background on Distributed Computing](#background)
 2. [Installation](#install)
 3. [API Documentation](#docs)
 4. [Getting Started](#gettingStarted)
@@ -102,7 +102,7 @@ To terminate and resolve a distributed computing process, specifify the followin
 socket.emit('processComplete', data)
 ```
 ### <a name="webWorkers"></a> Task Distribution with Web Workers
-Web Workers are used to simulate a multithread environment to enable concurrent processing. The client may receive multiple tasks from the server to process. To specifiy the number of workers to use on a client pass in a number as a second parameter to clientReady message. Use navigator.hardwareConcurrency to determine the maximum number of Web Workers a client can handle(number of cores). 
+Web Workers are used to simulate a multithread environment to enable concurrent processing. The client may receive multiple tasks from the server to process. To specify the number of workers to use on a client pass in a number as a second parameter to clientReady message. Use navigator.hardwareConcurrency to determine the maximum number of Web Workers a client can handle(number of cores). 
 
 ```javascript
 
