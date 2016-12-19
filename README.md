@@ -1,13 +1,8 @@
 ![Distributed Computing in Javascript](dethreadBlack.png?raw=true) [![npm version](https://badge.fury.io/js/dethread.svg)](https://badge.fury.io/js/dethread)
 
-deThread is an application library that enables distributed computing with JavaScript in the web browser. 
+deThread is a library that enables distributed computing with JavaScript in the web browser. deThread handles server-side application logic & task distribution, task failure management (e.g. client disconnection) and client management, and encourages the use of web workers on the client to maximize the processing of tasks in parallel.
 
-If you are a deThread user and would like to provide feed back on how we can improve, please
-[click here to leave some feedback](https://docs.google.com/forms/d/e/1FAIpQLSdRxi7h0A7A0YFU5Bmcj1nduDyMIPpE5H9zZzPCwHnAY7cgdQ/viewform).
-
-We would love the opportunity to dethread your problems.
-
-[Checkout our demo application](http://dethread.io/)
+[Checkout our website and demo application](http://dethread.io/)!
 
 ## Contents 
 1. [Background on Distributed Computing](#background)
@@ -112,11 +107,13 @@ If numWorkers is not supplied, it defaults to 1.
 
 ## <a name="md5"></a> Examples and Use Cases 
 
-[Checkout our demo application](http://dethread.io/)
-We used MD5 hash decryption as an example to illustrate the power of distributed computing.  Not only does DeThread allow for users to distribute a problem across multiple bot-net nodes, it distributes the problem further on each connected device. 
-The problem is chunked once before it is distributed, then it is chunked again on the client and distributed to Web Workers dependent upon the client's hardware.
+[Checkout our website and demo application](http://dethread.io/)!
+We developed an application for MD5 hash decryption to illustrate the power of distributed computing using the deThread library.
 
 ## <a name="contributors"></a> Contributors 
 * [Bryan Yee](https://github.com/bryanyee)
 * [Shawn Southwell](https://github.com/shawn-southwell)
 * [Daniel Lao](https://github.com/Dlaosb)
+
+To provide feed back on how deThread can improve, please
+[click here](https://docs.google.com/forms/d/e/1FAIpQLSdRxi7h0A7A0YFU5Bmcj1nduDyMIPpE5H9zZzPCwHnAY7cgdQ/viewform).
