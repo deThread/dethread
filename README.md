@@ -12,6 +12,7 @@ deThread is a library that enables distributed computing with JavaScript in the 
 5. [Task Handling on the Client](#clientSide)
 6. [MD5 Decryption Example](#md5)
 7. [Contributors](#contributors)
+8. [Feedback](#feedback)
 
 
 ## <a name="background"></a> Background on Distributed Computing
@@ -115,5 +116,7 @@ We developed an application for MD5 hash decryption to illustrate the power of d
 * [Shawn Southwell](https://github.com/shawn-southwell)
 * [Daniel Lao](https://github.com/Dlaosb)
 
+
+## <a name="feedback"></a> Feedback
 To provide feed back on how deThread can improve, please
 [click here](https://docs.google.com/forms/d/e/1FAIpQLSdRxi7h0A7A0YFU5Bmcj1nduDyMIPpE5H9zZzPCwHnAY7cgdQ/viewform).
